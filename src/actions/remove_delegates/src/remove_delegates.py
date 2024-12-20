@@ -54,9 +54,6 @@ def lambda_handler(event, context):
     """
     `remove_delagates` lambda handler. Retrieves and removes user's delegates. Adds user's manager as a delegate
     """
-    global lambda_name
-    lambda_name = context.function_name
-
     records: List[event_table.EventTableRecord] = json.loads(
         event.get('Records')[0].get('Sns').get('Message'),
         cls=event_table.EventTableRecordDecoder)

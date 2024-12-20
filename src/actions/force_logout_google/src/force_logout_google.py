@@ -54,11 +54,6 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-    global lambda_name
-    lambda_name = context.function_name
-
-    logger.info(lambda_name)
-
     records: List[event_table.EventTableRecord] = json.loads(
         event.get('Records')[0].get('Sns').get('Message'),
         cls=event_table.EventTableRecordDecoder)

@@ -8,6 +8,8 @@ logger = plnu_logger.PLNULogger(log_level).get_logger()
 deploy_env = os.getenv('deploy_environment')
 source_arn = os.getenv('email_arn')
 
+ses = boto3.client('ses')
+
 
 def lambda_handler(event, context):
     """
@@ -24,7 +26,6 @@ def lambda_handler(event, context):
     lambda_name = msg.get("lambda_name")
     error = msg.get("error")
 
-    ses = boto3.client('ses')
     response = ses.send_email(
         Destination={"ToAddresses": [os.getenv('sns_failure_topic_email')]},
         SourceArn=source_arn,

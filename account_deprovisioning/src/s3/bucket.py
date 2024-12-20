@@ -28,6 +28,7 @@ def bucket_init(stack: Stack, environment):
         ),
         versioned=False,
         encryption=s3.BucketEncryption.S3_MANAGED,
+        enforce_ssl=True
     )
 
     Tags.of(bucket).add("plnu:dr:type", "no-backup")

@@ -4,7 +4,6 @@ from googleapiclient.errors import HttpError
 
 import os
 import json
-import datetime
 import time
 
 from acct_decom_utils.event_table import event_table
@@ -15,7 +14,7 @@ from acct_decom_utils.failed_lambda_processing.handle_success import handle_succ
 from acct_decom_utils.exceptions.exceptions import GoogleAcctDeprovException
 from typing import List
 from string import Template
-import re
+from datetime import datetime, timezone
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.settings.basic']
 
@@ -58,11 +57,6 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-    global lambda_name
-    lambda_name = context.function_name
-
-    logger.info(lambda_name)
-
     records: List[event_table.EventTableRecord] = json.loads(
         event.get('Records')[0].get('Sns').get('Message'),
         cls=event_table.EventTableRecordDecoder)
@@ -89,7 +83,7 @@ def lambda_handler(event, context):
             'manager_first': record.mgr_first,
             'manager_last': record.mgr_last,
             'manager_email': record.mgr_email,
-            'cpy_yr': datetime.date.today().year
+            'cpy_yr': datetime.now(timezone.utc).year
         }
         template = Template(html_content)
 

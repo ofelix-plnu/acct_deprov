@@ -36,10 +36,6 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-    global lambda_name
-    lambda_name = context.function_name
-    logger.info(lambda_name)
-
     records = json.loads(event['Records'][0]['Sns']['Message'])
     for record in records:
         try:

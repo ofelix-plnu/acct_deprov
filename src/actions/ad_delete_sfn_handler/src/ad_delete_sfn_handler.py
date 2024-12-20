@@ -31,9 +31,6 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-    global lambda_name
-    lambda_name = context.function_name
-
     record = event['record']
     action = event['action']
     wait = event['waitSeconds']
