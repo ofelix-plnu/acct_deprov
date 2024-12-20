@@ -1,0 +1,5 @@
+aws-cdk-lib==2.89.0
+constructs>=10.0.0,<11.0.0
+jsii==1.85.0
+plnu-python-cdk-utils@git+ssh://git@bitbucket.org/pointloma/plnu-python-cdk-utils.git@v0.1.6
+zipp==3.19.1

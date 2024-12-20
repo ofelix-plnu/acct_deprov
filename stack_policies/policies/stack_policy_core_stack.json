@@ -1,0 +1,28 @@
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "Update:*",
+      "Principal": "*",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "Update:Replace",
+        "Update:Delete"
+      ],
+      "Principal": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "ResourceType": [
+            "AWS::DynamoDB::Table",
+            "AWS::SNS::Topic",
+            "AWS::SSM::Parameter"
+          ]
+        }
+      }
+    }
+  ]
+}

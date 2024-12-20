@@ -1,0 +1,11 @@
+{
+  "/deprovisioning/steps/employee/emp-1": "{\"previous_step\": \"0\", \"next_step\": \"emp-30\", \"next_step_delay\": \"29\"}",
+  "/deprovisioning/steps/employee/emp-30": "{\"previous_step\": \"emp-1\", \"next_step\": \"emp-60\", \"next_step_delay\": \"30\"}",
+  "/deprovisioning/steps/employee/emp-60": "{\"previous_step\": \"emp-30\", \"next_step\": \"emp-90\", \"next_step_delay\": \"30\"}",
+  "/deprovisioning/steps/employee/emp-90": "{\"previous_step\": \"emp-60\", \"next_step\": \"emp-120\", \"next_step_delay\": \"30\"}",
+  "/deprovisioning/steps/employee/emp-120": "{\"previous_step\": \"emp-90\", \"next_step\": \"emp-150\", \"next_step_delay\": \"30\"}",
+  "/deprovisioning/steps/employee/emp-150": "{\"previous_step\": \"emp-120\", \"next_step\": \"emp-180\", \"next_step_delay\": \"30\"}",
+  "/deprovisioning/steps/employee/emp-180": "{\"previous_step\": \"emp-150\", \"next_step\": \"emp-270\", \"next_step_delay\": \"90\"}",
+  "/deprovisioning/steps/employee/emp-270": "{\"previous_step\": \"emp-180\", \"next_step\": \"end\", \"next_step_delay\": \"1\"}",
+  "/deprovisioning/steps/student/stu-1": "{\"previous_step\": \"0\", \"next_step\": \"stu-2a\", \"next_step_delay\": \"30\"}"
+}

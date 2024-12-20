@@ -1,0 +1,29 @@
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "Update:*",
+      "Principal": "*",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "Update:Replace",
+        "Update:Delete"
+      ],
+      "Principal": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "ResourceType": [
+            "AWS::S3::Bucket",
+            "AWS::SecretsManager::Secret",
+            "AWS::SQS::Queue",
+            "AWS::StepFunctions::StateMachine"
+          ]
+        }
+      }
+    }
+  ]
+}

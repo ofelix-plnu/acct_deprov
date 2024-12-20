@@ -1,0 +1,3 @@
+acct_decom_utils@git+ssh://git@bitbucket.org/pointloma/acct_decom_utils.git@v0.5.2
+userprovisioning@git+ssh://git@bitbucket.org/pointloma/userprovisioninglibs.git@v0.2.23
+urllib3<2
