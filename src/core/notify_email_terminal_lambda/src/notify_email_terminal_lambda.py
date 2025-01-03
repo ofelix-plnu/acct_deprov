@@ -20,7 +20,6 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-    logger.info(event)
     msg = json.loads(event.get('Records')[0].get('Sns').get('Message'))
     username = msg.get("username")
     lambda_name = msg.get("lambda_name")
@@ -45,7 +44,7 @@ def lambda_handler(event, context):
         Source=os.getenv('from_email'),
         ReturnPathArn=source_arn
     )
-    logger.info(f"response: {response}")
+    logger.info(f"response: {response.HTTPStatusCode}")
 
     return {
         'statusCode': 200,

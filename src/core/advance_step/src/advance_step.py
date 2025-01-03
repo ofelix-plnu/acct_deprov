@@ -6,9 +6,10 @@ from botocore.exceptions import ClientError
 from acct_decom_utils.event_table import event_table
 from acct_decom_utils.plnu_logger import plnu_logger
 
-
 log_level = os.getenv('log_level', 'INFD')
 logger = plnu_logger.PLNULogger(log_level).get_logger()
+
+ssm = boto3.client('ssm')
 
 
 def update_step(event_to_update: event_table.EventTableRecord, param):
@@ -57,22 +58,23 @@ def get_step_params():
     :return: Formatted parameters in a dictionary
     :rtype: dict
     """
-    ssm = boto3.client('ssm')
-    params = ssm.get_parameters_by_path(
-        Path='/deprovisioning/steps',
-        Recursive=True
-    )
-
     param_dict = {}
-    for parameter in params.get('Parameters'):
-        param_parts = parameter.get('Name').split('/')
-        step_name = param_parts[-1]
-        acct_type = param_parts[-2]
+    paginator = ssm.get_paginator('get_parameters_by_path')
 
-        if acct_type not in param_dict:
-            param_dict[acct_type] = {}
+    # Handle pagination
+    for page in paginator.paginate(
+            Path='/deprovisioning/steps',
+            Recursive=True
+    ):
+        for parameter in page['Parameters']:
+            param_parts = parameter.get('Name').split('/')
+            step_name = param_parts[-1]
+            acct_type = param_parts[-2]
 
-        param_dict[acct_type][step_name] = parameter.get('Value')
+            if acct_type not in param_dict:
+                param_dict[acct_type] = {}
+
+            param_dict[acct_type][step_name] = parameter.get('Value')
 
     return param_dict
 
@@ -84,15 +86,10 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-    logger.info(event)
-
     params = get_step_params()
-    logger.info(params)
 
     records = json.loads(event.get('Records')[0].get('Sns').get('Message'), cls=event_table.EventTableRecordDecoder)
     for record in records:
-        logger.info(json.dumps(record, cls=event_table.EventTableRecordEncoder))
-
         acct_type = record.account_type
         step_name = record.next_step
         update_step(record, params[acct_type][step_name])

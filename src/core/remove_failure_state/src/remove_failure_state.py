@@ -16,11 +16,10 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-
-    logger.info(event)
     msg = json.loads(event.get('Records')[0].get('Sns').get('Message'))
     evt_table = event_table.EventTable()
     evt_table.remove_failed_lambda(msg.get("username"), msg.get("lambda_name"))
+    logger.info('Successfully removed failure state')
 
     return {
         'statusCode': 200,

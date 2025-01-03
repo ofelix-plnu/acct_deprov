@@ -9,6 +9,9 @@ topic_arn = os.environ.get("deprov_topic_arn")
 log_level = os.getenv('log_level', 'INFO')
 logger = plnu_logger.PLNULogger(log_level).get_logger()
 
+sns = boto3.client('sns')
+ssm = boto3.client('ssm')
+
 
 def get_step_params():
     """
@@ -18,22 +21,23 @@ def get_step_params():
     :return: Formatted parameters in a dictionary
     :rtype: dict
     """
-    ssm = boto3.client('ssm')
-    params = ssm.get_parameters_by_path(
-        Path='/deprovisioning/steps',
-        Recursive=True
-    )
-
     param_dict = {}
-    for parameter in params.get('Parameters'):
-        param_parts = parameter.get('Name').split('/')
-        step_name = param_parts[-1]
-        acct_type = param_parts[-2]
+    paginator = ssm.get_paginator('get_parameters_by_path')
 
-        if acct_type not in param_dict:
-            param_dict[acct_type] = {}
+    # Handle pagination
+    for page in paginator.paginate(
+            Path='/deprovisioning/steps',
+            Recursive=True
+    ):
+        for parameter in page['Parameters']:
+            param_parts = parameter.get('Name').split('/')
+            step_name = param_parts[-1]
+            acct_type = param_parts[-2]
 
-        param_dict[acct_type][step_name] = parameter.get('Value')
+            if acct_type not in param_dict:
+                param_dict[acct_type] = {}
+
+            param_dict[acct_type][step_name] = parameter.get('Value')
 
     return param_dict
 
@@ -48,8 +52,6 @@ def lambda_handler(event, context):
     :param context: The Lambda execution context.
     """
     params = get_step_params()
-
-    sns = boto3.client('sns')
 
     for acct_type in params.keys():
 

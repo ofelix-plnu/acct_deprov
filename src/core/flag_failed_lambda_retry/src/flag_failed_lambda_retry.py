@@ -16,8 +16,6 @@ def lambda_handler(event, context):
     :param event: The event data passed to the Lambda function.
     :param context: The Lambda execution context.
     """
-    logger.info(event)
-
     msg = json.loads(event.get('Records')[0].get('Sns').get('Message'))
 
     username = msg.get('username')
@@ -27,4 +25,4 @@ def lambda_handler(event, context):
     record = json.loads(json.dumps(
         evt_table.add_failed_lambda(username, lambda_name), cls=event_table.EventTableRecordEncoder),
         cls=event_table.EventTableRecordDecoder)
-    logger.info(record)
+    logger.info(f'Add failed lambda reponse: {record.HTTPStatusCode}')
