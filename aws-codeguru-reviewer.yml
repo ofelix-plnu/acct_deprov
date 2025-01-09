@@ -1,0 +1,77 @@
+version: 1.0
+
+# Sample YAML file
+# This configuration file is an optional file for Amazon CodeGuru Reviewer.
+# You must name your file aws-codeguru-reviewer.yml for CodeGuru Reviewer to recognize it.
+# Add the file to the root directory of your repository.
+# For more information, see the Amazon CodeGuru Reviewer User Guide:
+# https://docs.aws.amazon.com/codeguru/latest/reviewer-ug/welcome.html.
+
+# Exclude files and directories
+# Use glob pattern syntax to specify the files and directories that you want to exclude
+# from analysis under excludeFiles. For more information, see glob (programming):
+# https://en.wikipedia.org/wiki/Glob_(programming).
+# The following example excludes from analysis all content in the some-package directory, all content
+# in the tst directory, and all JSON files in a sub-directory under a directory prefixed with some-.
+# Replace with your own list of files and directories that you want CodeGuru Reviewer to exclude.
+# We recommend that you use a schema validator to confirm that the YAML syntax is valid.
+
+excludeFiles:
+  - 'github/*'
+  - 'parameters/*'
+  - 'src/layers/*'
+  - 'src/update_lib_version.py'
+  - 'stack_policies/*'
+  - 'templates/*'
+
+    # Exclude all files in the 'cdk.out' directory (AWS CDK outputs)
+  - 'cdk.out/*'
+
+  # Exclude all files in the '.aws-sam' directory (AWS SAM outputs, if applicable)
+  - '.aws-sam/*'
+
+  # Exclude documentation and markdown files
+  - 'docs/*'
+  - '**/*.md'
+
+  # Exclude all Python virtual environment and dependency directories
+  - '.venv/*'
+  - 'venv/*'
+  - 'env/*'
+  - 'requirements.txt'
+  - 'requirements-dev.txt'
+
+  # Exclude specific CDK configuration files (e.g., cdk.json, context files)
+  - 'cdk.json'
+  - 'cdk.context.json'
+
+  # Exclude test files and directories
+  - 'test/*'
+  - 'tests/*'
+  - '**/test/*'
+  - '**/tests/*'
+
+  # Exclude build and deployment scripts (e.g., CI/CD pipelines, GitHub Actions)
+  - '.github/*'
+  - 'bitbucket-pipelines.yml'
+  - 'circleci/*'
+  - 'buildspec.yml'
+
+  # Exclude any other non-code files (e.g., logs, system files)
+  - '**/*.log'
+  - '**/*.bak'
+  - '**/*.tmp'
+
+  # Exclude any files related to secrets or sensitive data (make sure these files are excluded by project policies)
+  - '**/secrets/*'
+
+  # Exclude AWS-related templates or CloudFormation files that are not part of the actual CDK code
+  - '**/*.template'
+  - '**/*.stack'
+
+  # Exclude large configuration files that do not affect the code itself
+  - 'README.md'
+  - 'LICENSE'
+  - '**/*.json'
+
+
